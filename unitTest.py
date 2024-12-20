@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 from numpy.linalg import LinAlgError
-from matrix import Matrix  # Replace with the actual path or module name
+from matrix import Matrix
 
 class TestMatrixInit(unittest.TestCase):
     def test_matrix_initialization(self):
@@ -43,7 +43,6 @@ class TestMatrixAdd(unittest.TestCase):
         self.assertEqual(result.shape, (rows, cols), "Resulting matrix should have the same dimensions.")
 
         # Verify element-wise addition is correct
-        # Since these are random, we check if result equals m1.matrix + m2.matrix
         expected = m1.matrix + m2.matrix
         np.testing.assert_array_equal(result, expected, "Result of add does not match element-wise addition.")
 
@@ -67,12 +66,10 @@ class TestMatrixAdd(unittest.TestCase):
 
 class TestMatrixSubtract(unittest.TestCase):
     def test_subtract_same_dimensions(self):
-        # Create two matrices of the same size
         rows, cols = 3, 3
         m1 = Matrix(rows, cols)
         m2 = Matrix(rows, cols)
         
-        # Perform the subtraction
         result = m1.subtract(m2)
         
         # Verify that result is a numpy array
@@ -91,7 +88,7 @@ class TestMatrixSubtract(unittest.TestCase):
 
         # Attempt to subtract a non-Matrix object
         with self.assertRaises(TypeError, msg="Subtracting non-Matrix object should raise TypeError."):
-            m1.subtract([[1, 2], [3, 4]])  # Not a Matrix instance
+            m1.subtract([[1, 2], [3, 4]])  
 
     def test_subtract_dimension_mismatch(self):
         # Create two matrices of different dimensions
@@ -165,7 +162,6 @@ class TestMatrixDivide(unittest.TestCase):
         # Check the shape of the result
         self.assertEqual(result.shape, (2, 2), "Resulting matrix should have shape (2, 2).")
 
-        # Compute the expected result using np.linalg.inv
         expected = np.dot(m1.matrix, np.linalg.inv(m2.matrix))
         np.testing.assert_array_almost_equal(result, expected, decimal=6, 
                                              err_msg="Result of division does not match expected (m1 * inverse(m2)).")
@@ -183,7 +179,7 @@ class TestMatrixDivide(unittest.TestCase):
         # Create a non-invertible matrix (determinant=0)
         m2 = Matrix(2, 2)
         m2.matrix = np.array([[1, 2],
-                              [2, 4]])  # Rows are multiples, so this is singular
+                              [2, 4]]) 
 
         with self.assertRaises(ValueError, msg="Dividing by a non-invertible matrix should raise ValueError."):
             m1.divide(m2)
@@ -191,7 +187,7 @@ class TestMatrixDivide(unittest.TestCase):
     def test_divide_dimension_mismatch(self):
         # (2x2) divided by (3x3) won't work because dimensions won't match after inversion.
         m1 = Matrix(2, 2)
-        m1.matrix = np.random.randint(1, 10, size=(2,2))  # Just some non-zero matrix
+        m1.matrix = np.random.randint(1, 10, size=(2,2))  
         
         m2 = Matrix(3, 3)
         m2.matrix = np.eye(3)  # Invertible 3x3 identity matrix
@@ -227,7 +223,7 @@ class TestMatrixInverse(unittest.TestCase):
         # Create a non-invertible matrix (determinant = 0)
         m = Matrix(2, 2)
         m.matrix = np.array([[1, 2],
-                             [2, 4]])  # Rows are linearly dependent
+                             [2, 4]])  
 
         # Ensure that attempting to invert a singular matrix raises LinAlgError
         with self.assertRaises(LinAlgError, msg="Inverting a non-invertible matrix should raise LinAlgError."):
@@ -297,14 +293,11 @@ class TestMatrixGetDeterminant(unittest.TestCase):
                                msg="Determinant of a singular matrix should be approximately 0.")
 
     def test_getDeterminant_random_matrix(self):
-        # Just a random test to ensure the method calls np.linalg.det correctly
-        # Compare with np.linalg.det directly.
         m = Matrix(3, 3)
         # Using a random integer matrix
         m.matrix = np.random.randint(1, 10, size=(3, 3))
         expected = np.linalg.det(m.matrix)
         result = m.getDeterminant()
-        # Due to floating point issues, we use assertAlmostEqual
         self.assertAlmostEqual(result, expected, places=7, 
                                msg="Determinant of a random matrix does not match np.linalg.det.")
 
@@ -328,8 +321,6 @@ class TestMatrixGetEigenDecomp(unittest.TestCase):
         self.assertCountEqual(eigen_values, expected_eigenvalues, 
                               "Eigenvalues do not match expected values for the diagonal matrix.")
         
-        # For eigenvectors, corresponding to the eigenvalues, we may need to handle ordering.
-        # Identify indices of the expected eigenvalues in the returned eigen_values
         idx = [np.where(np.isclose(eigen_values, ev))[0][0] for ev in expected_eigenvalues]
 
         # Reorder the eigenvectors to match the order of expected_eigenvalues
@@ -347,9 +338,6 @@ class TestMatrixGetEigenDecomp(unittest.TestCase):
         eigen_values, eigen_vectors = m.getEigenDecomp()
         expected_eigen_values, expected_eigen_vectors = np.linalg.eig(m.matrix)
 
-        # Since eigen decomposition may differ by order, we can't just assert equality directly.
-        # Instead, we can check that the set of eigenvalues is the same and the eigenvectors are consistent.
-        
         # Check eigenvalues as a set (order-independent)
         self.assertCountEqual(list(np.round(eigen_values, decimals=6)), 
                               list(np.round(expected_eigen_values, decimals=6)),

@@ -1,0 +1,33 @@
+Welcome to Matrix Mania, the very complicated matrix interface class.
+To use this class, simply include these import statements:
+    import numpy as np
+    from matrix import Matrix
+
+This will give you access to the Matrix class and all of its built in functionality. 
+
+Create a matrix object by specifying the rows and columns:
+    matrix1 = Matrix(3, 3)
+
+    This will generate a new matrix with 3 rows and columns, with randomnly generated values 0-9.
+    If you would like to change this, alter the constructor in the Matrix class from this: 
+        self.matrix = np.random.randint(10, size=(self.row, self.column))
+
+        to whatever number you would like. if 0-99 is desired, change 10 to 100
+
+With just one matrix, you can find:
+    inverse - print(matrix1.inverse())
+    transpose - print(matrix3.transpose())
+    determinant - print(matrix1.getDeterminant())
+    diagonal - print(Matrix.getDiagonal(matrix1.matrix))
+    eigen values and vectors - print(matrix1.getEigenDecomp())
+
+Once you have more than one matrix, you can perform simple operations:
+    addition - print(matrix1.add(matrix2))
+    subtraction - print(matrix1.subtract(matrix2))
+    multiplication - print(matrix1.multiply(matrix2))
+
+    ** please note that matrix mathematic rules apply **
+
+You can also create special matrices from the class as well:
+    identity (just specify rows for dimension) - print(Matrix.getIdentityMatrix(3))
+    zero matrix (specify rows & columns) - print(Matrix.createZeroMatrix(2, 3))

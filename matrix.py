@@ -4,13 +4,14 @@ class Matrix:
     def __init__(self, row, column):
         self.row = row
         self.column = column
-        self.matrix = np.random.randint(10, size=(self.row, self.column))
+        self.matrix = np.random.randint(10, size=(self.row, self.column)) #randomnly generates matrix with values between 0-9, feel free to change
 
     def printMatrix(self):
         print(self.matrix)
 
+    
     def add(self, other):
-
+        # checking if it's a matrix object or not, this is common in all functions for Matrix class
         if not isinstance(other, Matrix):
             raise TypeError("The object to add must be another Matrix.")
         
@@ -83,13 +84,19 @@ class Matrix:
         zero_mat = np.zeros((row, column))
         return zero_mat
 
-
+# creating matrices. Specify rows and columns
 matrix1 = Matrix(3, 3)
 matrix2 = Matrix(3, 3)
 matrix3 = Matrix(3, 2)
 
+print("Matrix 1:")
 matrix1.printMatrix()
+
+print("\nMatrix 2:")
+
 matrix2.printMatrix()
+
+print("\nMatrix 3:")
 matrix3.printMatrix()
 
 print("\n\n")
@@ -111,7 +118,10 @@ print("\ndivision:")
 print(matrix1.divide(matrix2))
 # print(matrix1.divide(matrix3))
 
+print("\nMatrix 3 transposed:")
 print(matrix3.transpose())
+
+print("\nMatrix 1 Determinant:")
 print(matrix1.getDeterminant())
 print("\nidentity matrices: ")
 print(Matrix.getIdentityMatrix(3))
@@ -121,6 +131,9 @@ print(Matrix.getDiagonal(matrix1.matrix))
 
 print("\nzero matrices:")
 print(Matrix.createZeroMatrix(2, 3))
+
+print("\nEigen Decomp:")
+print(matrix1.getEigenDecomp())
 
 
 
